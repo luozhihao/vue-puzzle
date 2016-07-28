@@ -8,6 +8,7 @@
                 @click="moveFn($index)"
             ></li>
         </ul>
+        <button class="btn btn-warning btn-block btn-reset" @click="render">重置游戏</button>
     </div>
 </template>
 
@@ -19,27 +20,61 @@ export default {
         }
     },
     methods: {
+
+        // 重置渲染
+        render () {
+            let puzzleArr = [],
+                i = 1;
+
+            // 生成包含1 ~ 15数字的数组
+            for (i; i < 16; i++) {
+                puzzleArr.push(i);
+            }
+
+            // 随机打乱数组
+            puzzleArr = puzzleArr.sort(() => {
+                return Math.random() - 0.5
+            });
+
+            // 页面显示
+            this.puzzles = puzzleArr;
+            this.puzzles.push('');
+        },
+
+        // 点击方块
         moveFn (index) {
 
+            // 获取点击位置及其上下左右的值
+            let curNum = this.puzzles[index],
+                leftNum = this.puzzles[index - 1],
+                rightNum = this.puzzles[index + 1],
+                topNum = this.puzzles[index - 4],
+                bottomNum = this.puzzles[index + 4];
+
+
+            // 和为空的位置交换数值
+            if (leftNum === '') {
+                this.puzzles.$set(index - 1, curNum)
+                this.puzzles.$set(index, '')
+            } else if (rightNum === '') {
+                this.puzzles.$set(index + 1, curNum)
+                this.puzzles.$set(index, '')
+            } else if (topNum === '') {
+                this.puzzles.$set(index - 4, curNum)
+                this.puzzles.$set(index, '')
+            } else if (bottomNum === '') {
+                this.puzzles.$set(index + 4, curNum)
+                this.puzzles.$set(index, '')
+            }
+        },
+
+        // 校验是否过关
+        passFn () {
+            
         }
     },
     ready () {
-        let puzzleArr = [],
-            i = 1;
-
-        // 生成包含1 ~ 15数字的数组
-        for (i; i < 16; i++) {
-            puzzleArr.push(i);
-        }
-
-        // 随机打乱数组
-        puzzleArr = puzzleArr.sort(() => {
-            return Math.random() - 0.5
-        });
-
-        // 页面显示
-        this.puzzles = puzzleArr;
-        this.puzzles.push('');
+        this.render()
     }
 }
 </script>
@@ -47,14 +82,19 @@ export default {
 <style>
 @import url('./assets/css/bootstrap.min.css');
 
+body {
+    font-family: Arial, "Microsoft YaHei"; 
+}
+
 .box {
-    padding: 100px;
+    width: 400px;
+    margin: 50px auto 0;
 }
 
 .puzzle-wrap {
     width: 400px;
     height: 400px;
-    margin: 0 auto;
+    margin-bottom: 40px;
     padding: 0;
     background: #ccc;
     list-style: none;
@@ -76,6 +116,10 @@ export default {
 
 .puzzle-empty {
     background: #ccc;
+    box-shadow: inset 2px 2px 18px;
+}
+
+.btn-reset {
     box-shadow: inset 2px 2px 18px;
 }
 </style>
