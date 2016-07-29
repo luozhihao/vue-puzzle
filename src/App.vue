@@ -70,7 +70,11 @@ export default {
 
         // 校验是否过关
         passFn () {
-            
+            const isPass = this.puzzles.every((e, i) => e === i + 1)
+
+            if (isPass) {
+                alert ('恭喜，闯关成功！')
+            }
         }
     },
     ready () {
