@@ -24,11 +24,11 @@ export default {
         // 重置渲染
         render () {
             let puzzleArr = [],
-                i = 1;
+                i = 1
 
             // 生成包含1 ~ 15数字的数组
             for (i; i < 16; i++) {
-                puzzleArr.push(i);
+                puzzleArr.push(i)
             }
 
             // 随机打乱数组
@@ -37,8 +37,8 @@ export default {
             });
 
             // 页面显示
-            this.puzzles = puzzleArr;
-            this.puzzles.push('');
+            this.puzzles = puzzleArr
+            this.puzzles.push('')
         },
 
         // 点击方块
@@ -49,8 +49,7 @@ export default {
                 leftNum = this.puzzles[index - 1],
                 rightNum = this.puzzles[index + 1],
                 topNum = this.puzzles[index - 4],
-                bottomNum = this.puzzles[index + 4];
-
+                bottomNum = this.puzzles[index + 4]
 
             // 和为空的位置交换数值
             if (leftNum === '') {
@@ -66,17 +65,25 @@ export default {
                 this.puzzles.$set(index + 4, curNum)
                 this.puzzles.$set(index, '')
             }
+
+            this.passFn()
         },
 
         // 校验是否过关
         passFn () {
-            const isPass = this.puzzles.every((e, i) => e === i + 1)
+            if (this.puzzles[15] === '') {
+                const newPuzzles = this.puzzles.slice(0, 15)
 
-            if (isPass) {
-                alert ('恭喜，闯关成功！')
+                const isPass = newPuzzles.every((e, i) => e === i + 1)
+
+                if (isPass) {
+                    alert ('恭喜，闯关成功！')
+                }
             }
         }
     },
+
+
     ready () {
         this.render()
     }
