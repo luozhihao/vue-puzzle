@@ -52,10 +52,10 @@ export default {
                 bottomNum = this.puzzles[index + 4]
 
             // 和为空的位置交换数值
-            if (leftNum === '' && index !== 4 && index !== 8 && index !== 12) {
+            if (leftNum === '' && index % 4) {
                 this.puzzles.$set(index - 1, curNum)
                 this.puzzles.$set(index, '')
-            } else if (rightNum === '' && index !== 3 && index !== 7 && index !== 11) {
+            } else if (rightNum === '' && 3 !== index % 4) {
                 this.puzzles.$set(index + 1, curNum)
                 this.puzzles.$set(index, '')
             } else if (topNum === '') {
